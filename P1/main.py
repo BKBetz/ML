@@ -1,4 +1,5 @@
 from P1.perceptron import Perceptron
+from P1.perceptronlayer import PerceptronLayer
 
 """
     The __str__ of the preceptron class returned many values which I thought were important
@@ -10,10 +11,11 @@ from P1.perceptron import Perceptron
 # INVERT (NOT) TEST
 t1 = Perceptron([0], [-1], 0.5)
 t2 = Perceptron([1], [-1], 0.5)
+layer_1 = PerceptronLayer([t1, t2])
 # this is the complete print with all the information of each perceptor uncomment for more info
 # print("{} \n{}".format(t1, t2))
 # this is the print of only the outputs
-print("INVERT results: {},{}".format(t1.get_output(), t2.get_output()))
+print(layer_1)
 
 
 # AND TEST
