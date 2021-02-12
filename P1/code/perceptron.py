@@ -1,8 +1,8 @@
 class Perceptron:
 
     """
-        Class gets inputs (list), weights(list), bias (float)
-        based on the inputs the function 'activationfunc' adds the weight to the sum
+        Class gets weights(list), bias (float)
+        based on the inputs it gets from the layer class, the function 'activationfunc' adds the weight to the sum
         if the total (sum + bias) < 0 return 0
         else return 1
 
@@ -38,8 +38,5 @@ class Perceptron:
         else:
             return 1
 
-    def get_output(self):
-        return self.activationfunc()
-
     def __str__(self):
-        return "Weight: {} \nBias: {} \nOutput: {}".format(self.weights, self.bias, self.get_output())
+        return "Weight: {} \nBias: {}".format(self.weights, self.bias)
