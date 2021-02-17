@@ -93,6 +93,21 @@ class PerceptronTest(unittest.TestCase):
         self.assertEqual([1], network.feed_forward([1, 0]))
         self.assertEqual([0], network.feed_forward([1, 1]))
 
+    def testHalfAdder(self):
+        t1 = Perceptron([1, 1], -1)
+        t2 = Perceptron([-1, -1], 1.5)
+        t3 = Perceptron([1, 1], -2)
+        # carry
+        t4 = Perceptron([0, 0, 1], -1)
+        # sum
+        t5 = Perceptron([1, 1, 0], -2)
 
-        def testHalfAdder():
+        layer_1 = PerceptronLayer([t1, t2, t3])
+        layer_2 = PerceptronLayer([t4, t5])
 
+        network = PerceptronNetwork([layer_1, layer_2])
+
+        self.assertEqual([0, 0], network.feed_forward([0, 0]))
+        self.assertEqual([0, 1], network.feed_forward([0, 1]))
+        self.assertEqual([0, 1], network.feed_forward([1, 0]))
+        self.assertEqual([1, 0], network.feed_forward([1, 1]))
