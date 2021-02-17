@@ -22,18 +22,19 @@ class Perceptron:
     def __init__(self, weights: list, bias: float):
         self.weights = weights
         self.bias = bias
-        self.sum = 0
 
     # use the inputs given by the layers to give an output
     def activationfunc(self, inputs: list):
+        sum = 0
         # lists should be same length
         if len(inputs) == len(self.weights):
             for x in range(0, len(inputs)):
                 if inputs[x] == 1:
-                    self.sum += self.weights[x]
+                    # add wn*xn to sum
+                    sum += inputs[x] * self.weights[x]
 
         # the formula is w1*x1 w2*x2...wn*xn + bias. The sum is the wn*xn so we only add the bias
-        if self.sum + self.bias < 0:
+        if sum + self.bias < 0:
             return 0
         else:
             return 1

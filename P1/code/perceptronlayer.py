@@ -11,9 +11,9 @@ class PerceptronLayer:
 
     def layer_output(self, inputs: list):
         outputs = []
-        for x in range(0, len(self.perceptrons)):
+        for perceptron in self.perceptrons:
             # get the output of each perceptron in the layer and save it in a list
-            p_output = self.perceptrons[x].activationfunc(inputs[x])
+            p_output = perceptron.activationfunc(inputs)
             outputs.append(p_output)
         return outputs
 
