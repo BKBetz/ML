@@ -11,8 +11,6 @@ from P3.code.neuronnetwork import NeuronNetwork
     Een neuron kan een output tussen de 0 en 1 hebben.
     
     Hieronder staan de tests met de perceptron waardes in een neuron
-    
-    p.s de code hieronder had ik netter kunnen maken met for loops maar ik kwam in tijdnood
 """
 
 
