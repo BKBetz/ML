@@ -8,7 +8,8 @@ class Neuron:
         self.bias = bias
         self.error = 0
         self.delta_weights = []
-        self.output = 0
+        self.n_output = 0
+        self.inputs = []
 
     # use the inputs given by the layers to give an output
     def sigmoid(self, total: float):
@@ -24,37 +25,39 @@ class Neuron:
 
         # the formula is w1*x1 w2*x2...wn*xn + bias. The sum is the wn*xn so we only add the bias
         total = sum + self.bias
-        self.output = self.sigmoid(total)
-        return self.output
+        self.n_output = self.sigmoid(total)
+        # save the inputs for the backprop
+        self.inputs = inputs
+        return self.n_output
 
     def calc_hidden_error(self, errors: list):
         sum = 0
         for error, weight in zip(errors, self.weights):
             sum += weight * error
 
-        e = self.output * (1-self.output) * sum
+        e = self.n_output * (1-self.n_output) * sum
 
-        return e
+        self.error = e
 
-    def update(self, error: float, bias: float):
-
-        self.error = error
-        self.bias = bias
+    def update(self, bias: float):
+        self.bias -= bias
 
         for x in range(0, len(self.weights)):
             self.weights[x] -= self.delta_weights[x]
 
-    def calc_error(self, output: float, target: float):
-        e = output * (1-output) * -(target - output)
-        return e
+    def calc_error(self, target: float):
+        e = self.n_output * (1-self.n_output) * -(target - self.n_output)
+        self.error = e
 
     def calc_gradient(self, output: float):
         gw = output * self.error
         return gw
 
-    def calc_weight_delta(self, input: list, lr: float):
+    def calc_weight_delta(self, lr: float):
+        # empty delta weights to remove old values
+        self.delta_weights = []
         for x in range(len(self.weights)):
-            dw = lr * x * self.error * input[x]
+            dw = lr * self.error * self.inputs[x]
             self.delta_weights.append(dw)
 
     def calc_bias_delta(self, lr: float):
@@ -63,11 +66,3 @@ class Neuron:
 
     def __str__(self):
         return "Weight: {} \nBias: {}".format(self.weights, self.bias)
-
-
-n1 = Neuron([-0.5, 0.5], 1.5, 1)
-
-print(n1.calc_hidden_error(0.249375, [0.131, -0.015]))
-n1.update([0, 0], 0)
-
-print(n1)

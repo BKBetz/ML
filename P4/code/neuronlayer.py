@@ -5,33 +5,33 @@ class NeuronLayer:
         self.layer_errors = []
         self.layer_biases = []
 
-    def layer_output(self, inputs: list, output: bool, target: float, lr:float):
+    def layer_output(self, inputs: list):
         outputs = []
         for neuron in self.neurons:
             # get the output of each neuron in the layer and save it in a list
-            n_output = neuron.activationfunc(inputs)
+            n_output = neuron.output(inputs)
             outputs.append(n_output)
 
         return outputs
 
-    def layer_error(self, output: bool, errors: list):
+    def layer_changes(self, output: bool, errors: list, target: float, lr: float):
         for neuron in self.neurons:
             if output is True:
                 e = neuron.calc_error(target)
-                self.layer_errors.append(e)
 
             else:
+                e = neuron.calc_hidden_error(errors)
 
-
-            neuron.calc_weight_delta(inputs, lr)
+            neuron.calc_weight_delta(lr)
             db = neuron.calc_bias_delta(lr)
 
+            self.layer_errors.append(e)
             self.layer_biases.append(db)
-
 
     def update_layer(self):
         for x in range(0, len(self.neurons)):
-            self.neurons[x].update(self.layer_errors[x], self.layer_biases[x])
+            # update each neuron with the correct biases
+            self.neurons[x].update(self.layer_biases[x])
 
     def get_layer_length(self):
         return len(self.neurons)
