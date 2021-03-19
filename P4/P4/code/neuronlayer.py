@@ -14,16 +14,23 @@ class NeuronLayer:
 
         return outputs
 
-    def layer_changes(self, output: bool, errors: list, target: float, lr: float):
-        for neuron in self.neurons:
+    def layer_changes(self, output: bool, errors: list, target, lr: float):
+        # empty bias layers so it doesn't stack up
+        self.layer_biases = []
+        for x in range(len(self.neurons)):
             if output is True:
-                e = neuron.calc_error(target)
+                # if the output layer has more than one outputneuron. the target is an list instead of int or float
+                # because of this we need to use indexes to send the correct target to the correct outputneuron
+                if type(target) == list:
+                    e = self.neurons[x].calc_error(target[x])
+                else:
+                    e = self.neurons[x].calc_error(target)
 
             else:
-                e = neuron.calc_hidden_error(errors)
+                e = self.neurons[x].calc_hidden_error(errors)
 
-            neuron.calc_weight_delta(lr)
-            db = neuron.calc_bias_delta(lr)
+            self.neurons[x].calc_weight_delta(lr)
+            db = self.neurons[x].calc_bias_delta(lr)
 
             self.layer_errors.append(e)
             self.layer_biases.append(db)

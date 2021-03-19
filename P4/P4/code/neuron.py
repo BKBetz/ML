@@ -31,23 +31,30 @@ class Neuron:
         return self.n_output
 
     def calc_hidden_error(self, errors: list):
+        # errors is a list of errors from the previous layer
         sum = 0
         for error, weight in zip(errors, self.weights):
             sum += weight * error
 
         e = self.n_output * (1-self.n_output) * sum
-
+        # change the neuron error and return the error as well because it is needed to calculate the hidden error of the next layer
         self.error = e
+        return e
 
     def update(self, bias: float):
-        self.bias -= bias
-
+        # gets correct bias from the layer
+        self.bias = self.bias - bias
         for x in range(0, len(self.weights)):
             self.weights[x] -= self.delta_weights[x]
+
+        # print for tests to show values after backprop
+        print("VALUES AFTER UPDATE: "
+              "weights: {}, error: {}, bias: {}".format([round(i, 3) for i in self.weights], round(self.error, 3), round(self.bias, 3)))
 
     def calc_error(self, target: float):
         e = self.n_output * (1-self.n_output) * -(target - self.n_output)
         self.error = e
+        return e
 
     def calc_gradient(self, output: float):
         gw = output * self.error
